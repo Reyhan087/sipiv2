@@ -21,35 +21,44 @@ export function Sidebar({ collapsed, onNavigate }: SidebarProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className={cn(
-        "flex items-center px-4 py-5",
-        collapsed ? "justify-center" : "gap-2",
-      )}>
+      <div
+        className={cn(
+          "flex items-center px-4 py-5 gap-2",
+          collapsed && "justify-center",
+        )}
+      >
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary text-white">
           <UtensilsCrossed className="h-4 w-4" />
         </div>
-        {!collapsed && (
-          <div className="flex flex-col">
-            <span className="font-display text-base font-bold leading-tight text-white">SIPI</span>
-            <span className="text-[11px] leading-tight text-sidebar-text">v2.0</span>
-          </div>
-        )}
+        <div
+          className={cn(
+            "flex flex-col",
+            collapsed && "hidden lg:flex",
+          )}
+        >
+          <span className="font-display text-base font-bold leading-tight text-white">
+            SIPI
+          </span>
+          <span className="text-[11px] leading-tight text-sidebar-text">
+            v2.0
+          </span>
+        </div>
       </div>
 
-      <div className={cn(
-        "border-t border-white/10 px-4 py-3",
-        collapsed && "px-0 flex justify-center",
-      )}>
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sidebar-hover text-sm font-medium text-white">
-            H
-          </div>
-          {!collapsed && (
-            <div className="flex flex-col">
-              <p className="text-sm font-medium leading-tight text-sidebar-active">Hanin</p>
-              <p className="text-xs leading-tight text-sidebar-text">Owner</p>
-            </div>
-          )}
+      <div
+        className={cn(
+          "border-t border-white/10 px-4 py-3 flex items-center gap-2",
+          collapsed && "md:px-0 md:justify-center lg:px-4 lg:justify-start",
+        )}
+      >
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sidebar-hover text-sm font-medium text-white">
+          H
+        </div>
+        <div className={cn("flex flex-col", collapsed && "hidden lg:flex")}>
+          <p className="text-sm font-medium leading-tight text-sidebar-active">
+            Hanin
+          </p>
+          <p className="text-xs leading-tight text-sidebar-text">Owner</p>
         </div>
       </div>
 
@@ -106,17 +115,23 @@ function SidebarNavLink({
         title={collapsed ? item.label : undefined}
         className={cn(
           "flex items-center gap-3 rounded-lg py-2.5 text-sm transition-colors duration-fast",
-          collapsed ? "justify-center px-0 w-12 mx-auto" : "px-3",
+          collapsed
+            ? "justify-center px-0 w-12 mx-auto lg:w-auto lg:px-3 lg:justify-start"
+            : "px-3",
           active
             ? "bg-sidebar-active-bg text-sidebar-active"
             : "text-sidebar-text hover:bg-sidebar-hover hover:text-sidebar-active",
         )}
       >
-        <Icon
-          className="h-5 w-5 shrink-0"
-          style={{ opacity: active ? 1 : 0.7 }}
-        />
-        {!collapsed && <span className="truncate">{item.label}</span>}
+        <Icon className="h-5 w-5 shrink-0" />
+        <span
+          className={cn(
+            "truncate",
+            collapsed && "hidden lg:inline",
+          )}
+        >
+          {item.label}
+        </span>
       </Link>
     </li>
   );
