@@ -69,3 +69,28 @@ export interface MenuItemRow extends MenuItem {
 }
 
 export type StockStatus = "aman" | "menipis" | "habis";
+
+export interface Transaction {
+  id: string;
+  subtotal: number;
+  tax_rate: number;
+  tax_amount: number;
+  admin_fee_rate: number;
+  admin_fee_amount: number;
+  total: number;
+  payment_method: string;
+  amount_paid: number;
+  change_amount: number;
+  status: string;
+  created_at: string;
+}
+
+export interface TransactionItem {
+  id: string;
+  transaction_id: string;
+  menu_item_id: string | null;
+  name: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
