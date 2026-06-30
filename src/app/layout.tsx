@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AppLayout from "@/components/layout/AppLayout";
 
 export const metadata: Metadata = {
   title: "SIPI — POS & Inventaris F&B",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body className="font-body antialiased">
+        <AppLayout>{children}</AppLayout>
+      </body>
     </html>
   );
 }
