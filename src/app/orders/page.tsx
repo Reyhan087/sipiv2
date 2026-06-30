@@ -19,7 +19,7 @@ import {
   Minus,
   Check,
   Clock,
-  Cash,
+  Banknote,
   QrCode,
   ArrowRightLeft,
 } from "lucide-react";
@@ -529,12 +529,12 @@ export default function OrdersPage() {
 function PaymentIcon({ method }: { method: string }) {
   switch (method) {
     case "tunai":
-      return <Cash className="h-3 w-3" />;
+      return <Banknote className="h-3 w-3" />;
     case "qris":
       return <QrCode className="h-3 w-3" />;
     case "transfer":
       return <ArrowRightLeft className="h-3 w-3" />;
     default:
-      return <Cash className="h-3 w-3" />;
+      return <Banknote className="h-3 w-3" />;
   }
 }
