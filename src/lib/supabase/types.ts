@@ -60,6 +60,13 @@ export interface Employee {
   created_at: string;
 }
 
+export interface Customer {
+  id: string;
+  name: string;
+  whatsapp: string | null;
+  created_at: string;
+}
+
 export interface MenuItemRow extends MenuItem {
   categories: Pick<Category, "id" | "name"> | null;
   recipes: Array<
@@ -70,18 +77,21 @@ export interface MenuItemRow extends MenuItem {
 
 export type StockStatus = "aman" | "menipis" | "habis";
 
+export type OrderStatus = "pending" | "diproses" | "selesai";
+
 export interface Transaction {
   id: string;
+  customer_id: string | null;
   subtotal: number;
   tax_rate: number;
   tax_amount: number;
   admin_fee_rate: number;
   admin_fee_amount: number;
   total: number;
-  payment_method: string;
+  payment_method: string | null;
   amount_paid: number;
   change_amount: number;
-  status: string;
+  status: OrderStatus;
   created_at: string;
 }
 

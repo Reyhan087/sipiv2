@@ -66,6 +66,44 @@ create table employees (
   created_at timestamptz default now()
 );
 
+create table customers (
+  id uuid default uuid_generate_v4() primary key,
+  name text not null,
+  whatsapp text,
+  created_at timestamptz default now()
+);
+
+create table transactions (
+  id uuid default uuid_generate_v4() primary key,
+  customer_id uuid references customers(id) on delete set null,
+  subtotal integer not null default 0,
+  tax_rate integer not null default 0,
+  tax_amount integer not null default 0,
+  admin_fee_rate integer not null default 0,
+  admin_fee_amount integer not null default 0,
+  total integer not null default 0,
+  payment_method text,
+  amount_paid integer not null default 0,
+  change_amount integer not null default 0,
+  status text not null default 'pending' check (status in ('pending', 'diproses', 'selesai')),
+  created_at timestamptz default now()
+);
+
+create index idx_transactions_status on transactions(status);
+create index idx_transactions_customer on transactions(customer_id);
+
+create table transaction_items (
+  id uuid default uuid_generate_v4() primary key,
+  transaction_id uuid not null references transactions(id) on delete cascade,
+  menu_item_id uuid references menu_items(id) on delete set null,
+  name text not null,
+  price integer not null,
+  quantity integer not null,
+  subtotal integer not null
+);
+
+create index idx_transaction_items_tx on transaction_items(transaction_id);
+
 alter table categories enable row level security;
 alter table menu_items enable row level security;
 alter table menu_variations enable row level security;
@@ -73,6 +111,9 @@ alter table ingredients enable row level security;
 alter table ingredient_price_history enable row level security;
 alter table recipes enable row level security;
 alter table employees enable row level security;
+alter table customers enable row level security;
+alter table transactions enable row level security;
+alter table transaction_items enable row level security;
 
 create policy "Allow all on categories" on categories for all using (true) with check (true);
 create policy "Allow all on menu_items" on menu_items for all using (true) with check (true);
@@ -81,3 +122,6 @@ create policy "Allow all on ingredients" on ingredients for all using (true) wit
 create policy "Allow all on ingredient_price_history" on ingredient_price_history for all using (true) with check (true);
 create policy "Allow all on recipes" on recipes for all using (true) with check (true);
 create policy "Allow all on employees" on employees for all using (true) with check (true);
+create policy "Allow all on customers" on customers for all using (true) with check (true);
+create policy "Allow all on transactions" on transactions for all using (true) with check (true);
+create policy "Allow all on transaction_items" on transaction_items for all using (true) with check (true);
