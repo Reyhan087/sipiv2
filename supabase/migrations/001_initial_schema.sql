@@ -104,6 +104,43 @@ create table transaction_items (
 
 create index idx_transaction_items_tx on transaction_items(transaction_id);
 
+create table promos (
+  id uuid default uuid_generate_v4() primary key,
+  code text unique not null,
+  discount_type text not null default 'nominal' check (discount_type in ('nominal', 'persentase')),
+  discount_value integer not null default 0,
+  valid_from timestamptz,
+  valid_until timestamptz,
+  is_active boolean default true,
+  created_at timestamptz default now()
+);
+
+create table store_settings (
+  id integer primary key default 1 check (id = 1),
+  store_name text not null default 'SIPI',
+  logo_url text,
+  contact text,
+  wa_message_template text default 'Terima kasih telah berbelanja!',
+  gmaps_link text,
+  kitchen_mode boolean default false,
+  tax_enabled boolean default false,
+  tax_rate integer not null default 11,
+  admin_fee_enabled boolean default false,
+  admin_fee_type text not null default 'persentase' check (admin_fee_type in ('nominal', 'persentase')),
+  admin_fee_value integer not null default 0,
+  printer_type text,
+  paper_width integer default 80,
+  auto_print boolean default false
+);
+
+create table qr_tables (
+  id uuid default uuid_generate_v4() primary key,
+  label text not null,
+  table_number integer not null,
+  qr_code text not null,
+  created_at timestamptz default now()
+);
+
 alter table categories enable row level security;
 alter table menu_items enable row level security;
 alter table menu_variations enable row level security;
@@ -114,6 +151,9 @@ alter table employees enable row level security;
 alter table customers enable row level security;
 alter table transactions enable row level security;
 alter table transaction_items enable row level security;
+alter table promos enable row level security;
+alter table store_settings enable row level security;
+alter table qr_tables enable row level security;
 
 create policy "Allow all on categories" on categories for all using (true) with check (true);
 create policy "Allow all on menu_items" on menu_items for all using (true) with check (true);
@@ -125,3 +165,6 @@ create policy "Allow all on employees" on employees for all using (true) with ch
 create policy "Allow all on customers" on customers for all using (true) with check (true);
 create policy "Allow all on transactions" on transactions for all using (true) with check (true);
 create policy "Allow all on transaction_items" on transaction_items for all using (true) with check (true);
+create policy "Allow all on promos" on promos for all using (true) with check (true);
+create policy "Allow all on store_settings" on store_settings for all using (true) with check (true);
+create policy "Allow all on qr_tables" on qr_tables for all using (true) with check (true);
