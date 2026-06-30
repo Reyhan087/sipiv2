@@ -12,14 +12,18 @@ import { RightPanel } from "@/components/layout/RightPanel";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
+  const isLogin = pathname === "/login";
+  const isPosPage = pathname === "/pos";
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
 
-  const isPosPage = pathname === "/pos";
-
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
   const toggleRightPanel = useCallback(() => setRightPanelOpen((p) => !p), []);
+
+  if (isLogin) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-bg">
